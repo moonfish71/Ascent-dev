@@ -129,8 +129,8 @@ namespace Ascent.Content.NPCs.Events.Starfall
                     break;
             }
 
-            Vector2 locNet = Vector2.Zero;
-            int numOther = 0;
+            //Vector2 locNet = Vector2.Zero;
+            //int numOther = 0;
 
             //foreach (NPC npc in Main.npc)
             //{
@@ -146,15 +146,15 @@ namespace Ascent.Content.NPCs.Events.Starfall
             //    }
             //}
 
-            if (numOther != 0)
-            {
-                locNet /= numOther;
-            }
+            //if (numOther != 0)
+            //{
+            //    locNet /= numOther;
+            //}
 
-            if (NPC.velocity.Y == 0)
-            {
-                NPC.velocity.X -= 10f * locNet.X;
-            }
+            //if (NPC.velocity.Y == 0)
+            //{
+            //    NPC.velocity.X -= 10f * locNet.X;
+            //}
 
             /*
              * State controlls behavior

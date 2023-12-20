@@ -60,7 +60,7 @@ Configs: {
 
 		ParticleLimit: {
 			Label: Particle Limit
-			Tooltip: Controls the number of particles able to be generated in game. Lower this if the game is laggy (Rounds to the nearest whole number in code)
+			Tooltip: Controls the number of particles able to be generated in game. Lower this if the game is laggy
 		}
 
 		TalkTextSetting: {
@@ -70,7 +70,7 @@ Configs: {
 
 		HPScale: {
 			Label: HP Multiplier
-			Tooltip: Changes the HP of every NPC added by the mod. Change this if you want to make the game either more easy or more difficult
+			Tooltip: Changes the HP of every NPC added by the mod. Change this to adjust difficulty
 		}
 	}
 
