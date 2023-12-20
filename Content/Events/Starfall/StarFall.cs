@@ -1,4 +1,5 @@
 ﻿using Ascent.Content.NPCs.Events.Starfall;
+using Ascent.Core.ModWorlds;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Ascent.Content.Events.Starfall
 
         public void StartEvent()
         {
-
+            EventWorld.StarfallUp = true;
         }
 
         public void Update()

@@ -1,4 +1,5 @@
 ﻿using Ascent.Core;
+using Ascent.Configs;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,18 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.DataStructures;
 
 namespace Ascent.Content.NPCs.Templates
 {
     public abstract class AscentNPC : ModNPC
     {
+        public override void OnSpawn(IEntitySource source)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * new AscentServerConfig().HPScale);
+            NPC.life = NPC.lifeMax;
+        }
+
         #region Basic Actions
         public void Move(Vector2 pos, Vector2 target, float speed)
         {

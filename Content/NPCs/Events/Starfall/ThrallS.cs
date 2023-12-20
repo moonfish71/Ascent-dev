@@ -132,19 +132,19 @@ namespace Ascent.Content.NPCs.Events.Starfall
             Vector2 locNet = Vector2.Zero;
             int numOther = 0;
 
-            foreach (NPC npc in Main.npc)
-            {
-                if (npc.whoAmI != NPC.whoAmI && npc.ModNPC is ThrallS)
-                {
-                    Vector2 locDelta = npc.Center - NPC.Center;
+            //foreach (NPC npc in Main.npc)
+            //{
+            //    if (npc.whoAmI != NPC.whoAmI && npc.ModNPC is ThrallS)
+            //    {
+            //        Vector2 locDelta = npc.Center - NPC.Center;
 
-                    numOther++;
-                    if (locDelta.X != float.NaN && locDelta.Y != float.NaN)
-                    {
-                        locNet += locDelta / locDelta.LengthSquared();
-                    }
-                }
-            }
+            //        numOther++;
+            //        if (locDelta.X != float.NaN && locDelta.Y != float.NaN)
+            //        {
+            //            locNet += locDelta / locDelta.LengthSquared();
+            //        }
+            //    }
+            //}
 
             if (numOther != 0)
             {
@@ -194,10 +194,11 @@ namespace Ascent.Content.NPCs.Events.Starfall
 
         public void SetNewState()
         {
+            NPC.netUpdate = true;
             switch (State)
             {
                 case 0:
-                    if (delta.Length() < 400f)
+                    if (delta.Length() < 400f && Main.rand.NextBool(10))
                     {
                         State = 1;
                     }
@@ -249,6 +250,8 @@ namespace Ascent.Content.NPCs.Events.Starfall
                     break;
 
             }
+
+            NPC.netUpdate = false;
 
             if (State != OldState)
             {

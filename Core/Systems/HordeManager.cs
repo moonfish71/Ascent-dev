@@ -31,22 +31,22 @@ namespace Ascent.Core.Systems
         {
             orig(self, i);
 
-            //for (int k = 0; k < Hordes.Capacity; k++)
-            //{
-            //    Hordes.Add(new List<NPC>());
-            //}
+            for (int k = 0; k < Hordes.Capacity; k++)
+            {
+                Hordes.Add(new List<NPC>());
+            }
 
-            //foreach (NPC npc in Main.npc)
-            //{
-            //    if (npc.ModNPC is ThrallS)
-            //    {
-            //        Hordes[0].Add(npc);
-            //    }
-            //    else if (Hordes[0].Contains(npc))
-            //    {
-            //        Hordes[0].Remove(npc);
-            //    }
-            //}
+            foreach (NPC npc in Main.npc)
+            {
+                if (npc.ModNPC is ThrallS)
+                {
+                    Hordes[0].Add(npc);
+                }
+                else if (Hordes[0].Contains(npc))
+                {
+                    Hordes[0].Remove(npc);
+                }
+            }
 
             //foreach (List<NPC> horde in Hordes)
             //{
@@ -71,7 +71,7 @@ namespace Ascent.Core.Systems
             //    }
             //}
 
-            //Hordes.Clear();
+            Hordes.Clear();
         }
     }
 }

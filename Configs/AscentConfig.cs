@@ -14,6 +14,7 @@ namespace Ascent.Configs
 
         [DefaultValue(255)]
         [Range(0f, 8192f)]
+        [Increment(1f)]
         public float ParticleLimit;
 
         public enum talkInteraction
@@ -24,8 +25,11 @@ namespace Ascent.Configs
         }
 
         [DefaultValue(talkInteraction.World)]
-        [Label("Talk Interaction")]
-        [Tooltip("Controls whether certain things talk using in-world text, the chatbox, or both.")]
         public talkInteraction TalkTextSetting;
+
+        [DefaultValue(1f)]
+        [Range(0.1f,10f)]
+        [Increment(0.1f)]
+        public float HPScale;
     }
 }

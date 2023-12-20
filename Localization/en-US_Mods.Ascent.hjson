@@ -67,6 +67,11 @@ Configs: {
 			Label: Talk Interaction
 			Tooltip: Controls whether certain things talk using in-world text, the chatbox, or both.
 		}
+
+		HPScale: {
+			Label: HP Multiplier
+			Tooltip: Changes the HP of every NPC added by the mod. Change this if you want to make the game either more easy or more difficult
+		}
 	}
 
 	talkInteraction: {

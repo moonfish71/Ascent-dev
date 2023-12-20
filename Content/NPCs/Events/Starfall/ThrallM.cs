@@ -105,6 +105,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
                 case (float)States.Slash:
                     NPC.velocity.X *= 0.95f;
                     NPC.aiStyle = -1;
+                    
 
                     if (Timer[0] == 40)
                     {
@@ -112,7 +113,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
                     }
                     break;
                 case (float)States.Dashing:
-                    NPC.velocity.X *= .95f;
+                    NPC.velocity.X *= .99f;
                     NPC.aiStyle = -1;
                     break;
             }
