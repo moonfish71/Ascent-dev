@@ -129,33 +129,6 @@ namespace Ascent.Content.NPCs.Events.Starfall
                     break;
             }
 
-            //Vector2 locNet = Vector2.Zero;
-            //int numOther = 0;
-
-            //foreach (NPC npc in Main.npc)
-            //{
-            //    if (npc.whoAmI != NPC.whoAmI && npc.ModNPC is ThrallS)
-            //    {
-            //        Vector2 locDelta = npc.Center - NPC.Center;
-
-            //        numOther++;
-            //        if (locDelta.X != float.NaN && locDelta.Y != float.NaN)
-            //        {
-            //            locNet += locDelta / locDelta.LengthSquared();
-            //        }
-            //    }
-            //}
-
-            //if (numOther != 0)
-            //{
-            //    locNet /= numOther;
-            //}
-
-            //if (NPC.velocity.Y == 0)
-            //{
-            //    NPC.velocity.X -= 10f * locNet.X;
-            //}
-
             /*
              * State controlls behavior
              * 

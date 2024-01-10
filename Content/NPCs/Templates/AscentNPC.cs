@@ -15,6 +15,17 @@ namespace Ascent.Content.NPCs.Templates
 {
     public abstract class AscentNPC : ModNPC
     {
+        public override string Texture => QuickDirectory.PlaceHolderTx;
+
+        public override void SetDefaults()
+        {
+            NPC.life = 1;
+            NPC.damage = 0;
+            NPC.defense = 1;
+            NPC.aiStyle = -1;
+            NPC.Size = new Vector2(32);
+        }
+
         public override void OnSpawn(IEntitySource source)
         {
             NPC.lifeMax = (int)(NPC.lifeMax * new AscentServerConfig().HPScale);

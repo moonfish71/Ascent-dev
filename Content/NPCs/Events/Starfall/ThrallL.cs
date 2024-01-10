@@ -29,10 +29,12 @@ namespace Ascent.Content.NPCs.Events.Starfall
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
+            string Desc = "A thrall of the Astral Gestalt. This thrall has grown drastically in size and strength, giving it the ability to deliver desvestating attacks and hurl its' smaller bretheren at foes.";
+
             bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Visuals.Meteor,
-                new FlavorTextBestiaryInfoElement("A thrall of the Astral Gestalt. This thrall has grown drastically in size and strength, giving it the ability to hurl its' smaller bretheren at foes.")
+                new FlavorTextBestiaryInfoElement(Desc)
             }); ;
         }
     }
