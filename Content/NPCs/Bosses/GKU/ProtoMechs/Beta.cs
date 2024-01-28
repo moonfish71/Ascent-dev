@@ -8,7 +8,10 @@ using Terraria.ModLoader;
 
 namespace Ascent.Content.NPCs.Bosses.GKU.ProtoMechs
 {
-    public class Beta : AscentNPC
+    public class BetaSpz : AscentNPC
+    {
+    }
+    public class BetaRet : AscentNPC
     {
     }
 }

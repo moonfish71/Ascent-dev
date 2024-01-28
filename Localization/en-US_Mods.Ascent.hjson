@@ -1,4 +1,4 @@
-﻿# This file will automatically update with entries for new content after a build and reload
+# This file will automatically update with entries for new content after a build and reload
 
 Items: {
 	locator: {
@@ -47,9 +47,10 @@ NPCs: {
 	ThrallL.DisplayName: Thrall Supermajor
 	ThrallM.DisplayName: Thrall Soldier
 	AsterBoss.DisplayName: Fell Aster
-	Alpha.DisplayName: Prototype Alpha
-	Beta.DisplayName: Prototype Beta
-	Gamma.DisplayName: Prototype Gamma
+	Alpha.DisplayName: CS-1 'Mercury'
+	BetaSpz.DisplayName: CS-2A 'Gemini-Alpha'
+	BetaRet.DisplayName: CS-2B 'Gemini-Beta'
+	Gamma.DisplayName: CS-3 'Apollo'
 }
 
 Projectiles: {

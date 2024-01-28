@@ -87,6 +87,8 @@ namespace Ascent.Content.Items.Weapons.Melee
         float rotation = 0;
         public float duration = 60;
 
+        int defDamage = 0;
+
         float MouseRotation;
         float SwingMagnitude = (float)Math.PI;
 
@@ -114,6 +116,8 @@ namespace Ascent.Content.Items.Weapons.Melee
                 InMouseDir = -Math.Sign(MouseDelta.X);
                 SetInitCons = true;
 
+                defDamage = Projectile.damage;
+
                 switch (Swing)
                 {
                     case 0:
@@ -135,13 +139,19 @@ namespace Ascent.Content.Items.Weapons.Melee
 
             float DLength = 1;
 
-            if (timer < 0.25f * duration)
+            if (timer < 0.1f * duration)
             {
                 DLength = ModMath.QuadEase(2 * timer / duration);
+                Projectile.damage = 0;
             }
-            else if(timer > 0.75f * duration)
+            else if(timer > 0.9f * duration)
             {
                 DLength = ModMath.QuadEase(2 * (timer - (duration / 2)) / duration);
+                Projectile.damage = 0;
+            }
+            else
+            {
+                Projectile.damage = defDamage;
             }
 
             DLength *= lengthMod;

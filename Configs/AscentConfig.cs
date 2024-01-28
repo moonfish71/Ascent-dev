@@ -26,10 +26,5 @@ namespace Ascent.Configs
 
         [DefaultValue(talkInteraction.World)]
         public talkInteraction TalkTextSetting;
-
-        [DefaultValue(1f)]
-        [Range(0.1f,10f)]
-        [Increment(0.1f)]
-        public float HPScale;
     }
 }

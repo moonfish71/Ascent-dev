@@ -26,12 +26,6 @@ namespace Ascent.Content.NPCs.Templates
             NPC.Size = new Vector2(32);
         }
 
-        public override void OnSpawn(IEntitySource source)
-        {
-            NPC.lifeMax = (int)(NPC.lifeMax * new AscentServerConfig().HPScale);
-            NPC.life = NPC.lifeMax;
-        }
-
         #region Basic Actions
         public void Move(Vector2 pos, Vector2 target, float speed)
         {
