@@ -25,6 +25,8 @@ namespace Ascent.Core
 
         public static string WeaponTex =            Textures + "Items/Weapons/";
         public static string MeleeTex =                         WeaponTex + "Melee/";
+        public static string RangedTex =                        WeaponTex + "Ranged/";
+        public static string GunTex =                               RangedTex + "Guns/";
 
         public static string NPCTex =               Textures + "NPCs/";
         public static string BossTex =                          NPCTex + "Bosses/";

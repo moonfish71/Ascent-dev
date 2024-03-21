@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Ascent.Configs;
+using Ascent.Core.Systems.Particles.IKChain;
 
 namespace Ascent.Core.Systems.Particles
 {
@@ -83,6 +84,8 @@ namespace Ascent.Core.Systems.Particles
             }
 
             UpdateLists();
+
+            ChainManager.Update();
 
             orig();
         }

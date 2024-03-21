@@ -19,11 +19,13 @@ namespace Ascent.Content.NPCs.Templates
 
         public override void SetDefaults()
         {
-            NPC.life = 1;
+            NPC.life = 10;
             NPC.damage = 0;
             NPC.defense = 1;
             NPC.aiStyle = -1;
             NPC.Size = new Vector2(32);
+            NPC.HitSound = SoundID.NPCHit1;
+            NPC.DeathSound = SoundID.NPCDeath1;
         }
 
         #region Basic Actions

@@ -1,4 +1,5 @@
 ﻿using Ascent.Content.Events.DarkNight;
+using Ascent.Content.Events.Starfall;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -68,7 +69,10 @@ namespace Ascent.Core.ModWorlds
                 DarkNight.UpdateEvent();
             }
 
-
+            if(StarfallUp)
+            {
+                StarFall.Update();
+            }
         }
 
         public override void ModifyLightingBrightness(ref float scale)

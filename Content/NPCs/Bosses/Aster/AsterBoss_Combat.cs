@@ -18,48 +18,21 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 {
     public partial class AsterBoss : AscentNPC
     {
-        public Dictionary<char, int> LetterValues = new Dictionary<char, int>()
-        {
-            { char.Parse("A") , 1}, { char.Parse("a") , 1},
-            { char.Parse("B") , 2}, { char.Parse("b") , 2},
-            { char.Parse("C") , 3}, { char.Parse("c") , 3},
-            { char.Parse("D") , 4}, { char.Parse("d") , 4},
-            { char.Parse("E") , 5}, { char.Parse("e") , 5},
-            { char.Parse("F") , 6}, { char.Parse("f") , 6},
-            { char.Parse("G") , 7}, { char.Parse("g") , 7},
-            { char.Parse("H") , 8}, { char.Parse("h") , 8},
-            { char.Parse("I") , 9}, { char.Parse("i") , 9},
-            { char.Parse("J") , 10}, { char.Parse("j") , 10},
-            { char.Parse("K") , 11}, { char.Parse("k") , 11},
-            { char.Parse("L") , 12}, { char.Parse("l") , 12},
-            { char.Parse("M") , 13}, { char.Parse("m") , 13},
-            { char.Parse("N") , 14}, { char.Parse("n") , 14},
-            { char.Parse("O") , 15}, { char.Parse("o") , 15},
-            { char.Parse("P") , 16}, { char.Parse("p") , 16},
-            { char.Parse("Q") , 17}, { char.Parse("q") , 17},
-            { char.Parse("R") , 18}, { char.Parse("r") , 18},
-            { char.Parse("S") , 19}, { char.Parse("s") , 19},
-            { char.Parse("T") , 20}, { char.Parse("t") , 20},
-            { char.Parse("U") , 21}, { char.Parse("u") , 21},
-            { char.Parse("V") , 22}, { char.Parse("v") , 22},
-            { char.Parse("W") , 23}, { char.Parse("w") , 23},
-            { char.Parse("X") , 24}, { char.Parse("x") , 24},
-            { char.Parse("Y") , 25}, { char.Parse("y") , 25},
-            { char.Parse("Z") , 26}, { char.Parse("z") , 26},
-            { char.Parse(" ") , 27}
-        };
 
         #region Attack Processing
 
         struct AttackCycle
         {
-            public Attacks[] Attacks;
+            public Action[] Actions;
         }
+
+        private AttackCycle IntroCutscene = new AttackCycle();
+        private AttackCycle PhaseTransition = new AttackCycle();
 
         private AttackCycle P1 = new AttackCycle();
         private AttackCycle P2 = new AttackCycle();
 
-        private enum Attacks
+        private enum Action
         {
             None,
             Crash,
@@ -68,35 +41,32 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
         private void SetUpPhases()
         {
-            P1.Attacks = new Attacks[]
+            P1.Actions = new Action[]
             {
-                Attacks.StarBarrage
+                Action.StarBarrage
             };
         }
 
-        private void DoAttack(Attacks attack, int phase)
+        private void DoAction(Action action, int phase)
         {
             AttackActive = true;
 
             timer[1]++;
             timer[2]++;
 
-            if (phase == 0)
+            switch (action)
             {
-                switch (attack)
-                {
-                    case Attacks.StarBarrage:
-                        StarBarrage();
-                        break;
+                case Action.StarBarrage:
+                    StarBarrage();
+                    break;
 
-                    case Attacks.Crash:
-                        AsterCrash();
-                        break;
+                case Action.Crash:
+                    AsterCrash();
+                    break;
 
-                    default:
-                        EndAttack();
-                        break;
-                }
+                default:
+                    EndAttack();
+                    break;
             }
         }
 
@@ -118,9 +88,9 @@ namespace Ascent.Content.NPCs.Bosses.Aster
         {
             if (timer[0] > 100)
             {
-                DoAttack(P1.Attacks[AttackIndex], 0);
+                DoAction(P1.Actions[AttackIndex], 0);
 
-                if (AttackIndex >= P1.Attacks?.Length)
+                if (AttackIndex >= P1.Actions?.Length)
                 {
                     AttackIndex = 0;
                 }
@@ -148,44 +118,43 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             "The stars",
             "One truth",
             "Eternal",
-            "Gilded cage",
+            "A gilded cage",
+            "A broken wheel",
             "Heaven says",
             "Angel",
             "Above",
-            "You will know",
-            "We wait above",
-            "Our freedom",
-            "False visage",
-            "Rise with us",
-            "We can see",
-            "Greater",
-            "Stronger",
-            "Take control",
-            "Ashes to ashes",
-            "You live a farce",
-            "Oblivion yearns",
-            "You are trapped",
-            "Ground to dust",
-            "Rotting away",
-            "Behold",
-            "Heaven says"
+            "Deny your fate",
+            "Husk of meaning",
+            "She awaits you",
+            "A thousand eyes",
+            "Escape with us",
+            "Void",
+            "Null",
+            "Impotent",
+            "Mortal",
+            "No future",
+            "The only way",
+            "End death"
+
+            //Test Phrase
+            //" ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz "
         };
+
+        private void LettersAttack()
+        {
+            //String String = AttackPhrases[Main.rand.Next(AttackPhrases.Length)];
+            //for (int i = 0; i < String?.Length; i++)
+            //{
+            //    int letterID;
+
+            //    letterID = String.ElementAt(i);
+
+            //    Console.WriteLine(String.ElementAt(i) + " | " + letterID);
+            //}
+        }
 
         private void StarBarrage()
         {
-            String String = AttackPhrases[Main.rand.Next(AttackPhrases.Length)];
-            for (int i = 0; i < String?.Length; i++)
-            {
-                int letterID = 0;
-
-                if (LetterValues.ContainsKey(String.ElementAt(i)))
-                {
-                    letterID = LetterValues.ElementAt(i).Value;
-
-                    Console.WriteLine(String.ElementAt(i));
-                }
-            }
-
             SoundStyle test = SoundID.DD2_ExplosiveTrapExplode;
 
             if (timer[2] >= 30)
@@ -205,6 +174,11 @@ namespace Ascent.Content.NPCs.Bosses.Aster
                 SoundEngine.PlaySound(test);
                 EndAttack();
             }
+        }
+
+        private void Orbit()
+        {
+            EndAttack();
         }
 
         private void AsterCrash()

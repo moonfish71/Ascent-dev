@@ -159,9 +159,9 @@ namespace Ascent.Content.NPCs.Bosses.Aster
         {
             if(spr is AsterSprite sprite)
             {
+                spr.TimeLeft = 0;
                 sprite.parent = null;
             }
-            //spr.TimeLeft = 0;
         }
     }
 }

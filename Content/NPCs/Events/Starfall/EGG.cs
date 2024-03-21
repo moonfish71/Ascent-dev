@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Ascent.Content.NPCs.Events.Starfall
@@ -31,7 +33,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
         {
             Projectile.netUpdate = true;
 
-            Projectile.velocity.Y = 10f;
+            Projectile.velocity.Y = Main.rand.NextFloat(7f, 15f);
             Projectile.velocity.X = Main.rand.NextFloat(-3f, 3f);
 
             Projectile.netUpdate = false;
@@ -39,6 +41,8 @@ namespace Ascent.Content.NPCs.Events.Starfall
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
+            SoundEngine.PlaySound(SoundID.NPCDeath1, Projectile.Center);
+
             if (Main.netMode != 1)
             {
                 var source = Projectile.GetSource_FromAI();

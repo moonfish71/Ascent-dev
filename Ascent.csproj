@@ -15,10 +15,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Effects\" />
+    <Folder Include="Assets\Textures\Items\Weapons\Ranged\Guns\" />
     <Folder Include="Assets\Textures\Particles\" />
     <Folder Include="Content\Items\Weapons\Magic\" />
     <Folder Include="Content\Items\Weapons\Summon\" />
-    <Folder Include="Content\Items\Weapons\Ranged\" />
     <Folder Include="Content\NPCs\Bosses\TheImpaled\" />
     <Folder Include="Content\NPCs\Events\Starfall\Minibosses\" />
   </ItemGroup>
