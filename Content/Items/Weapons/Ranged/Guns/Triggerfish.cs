@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace Ascent.Content.Items.Weapons.Ranged.Guns
 {
@@ -67,7 +68,6 @@ namespace Ascent.Content.Items.Weapons.Ranged.Guns
 
         public override void UseStyle(Player player, Rectangle heldItemFrame)
         {
-            base.UseStyle(player, heldItemFrame);
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

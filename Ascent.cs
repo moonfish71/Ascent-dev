@@ -4,6 +4,8 @@ using rail;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 using Ascent.Configs;
+using System.Diagnostics;
+using System;
 
 namespace Ascent
 {
@@ -26,6 +28,27 @@ namespace Ascent
         {
             ParticleHandler.Unload();
             HordeManager.Unload();
+        }
+
+        public static void FriendInsideMe(int Friends = 1)
+        {
+            //Friend Inside Me.
+
+            for (int i = 0; i < Friends; i++)
+            {
+                Console.WriteLine("Friend Inside Me");
+
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://www.youtube.com/watch?v=C0PgRC2BF6c",
+                    UseShellExecute = true
+                });
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("AND AS THE YEARS GO BY,");
+            Console.WriteLine("I WILL NEVER DIE");
+            Console.WriteLine("");
         }
     }
 }

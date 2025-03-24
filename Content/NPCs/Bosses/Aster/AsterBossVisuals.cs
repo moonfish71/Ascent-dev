@@ -35,7 +35,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            return false;
+            return true;
         }
 
         public override void ModifyTypeName(ref string typeName)
@@ -80,39 +80,25 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
                     rotation += velocity.X / 30;
 
-                    if(Math.Abs(rotation) > Math.Tau / 5)
+                    if (Math.Abs(rotation) > Math.Tau / 5)
                     {
                         rotation = 0;
                     }
                 }
                 else
                 {
-                    TimeLeft = 0;
+                    Kill();
                 }
 
-                if (oldParent != parent)
-                {
-                    TimeLeft = 0;
-                }
-
-                if (!Main.npc.Contains(parent))
-                {
-                    TimeLeft = 0;
-                }
+                oldParent = parent;
             }
-            else
-            {
-                TimeLeft = 0;
-            }
-
-            oldParent = parent;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             #region Trail
 
-            if (parent.ModNPC is AsterBoss aster)
+            if (parent.ModNPC is AsterBoss aster && parent.ModNPC != null)
             {
 
                 Vector2 flatVel = new Vector2(velocity.X, velocity.Y);

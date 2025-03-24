@@ -18,11 +18,6 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
         public float Z = 0;
 
-        public override void SetStaticDefaults()
-        {
-
-        }
-
         public override void SetDefaults()
         {
             NPC.boss = true;
@@ -35,7 +30,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             NPC.noTileCollide = true;
             NPC.aiStyle = -1;
 
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Sound/Music/AsterTheme(Placeholder)");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Sound/Music/Aster2MainLoop");
 
             SetUpPhases();
         }
@@ -51,10 +46,9 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             {
                 sprite.parent = sprite.oldParent = Main.npc[NPC.whoAmI];
             }
+            NPC.Opacity = 0;
 
-            UpdateTargets(80f * 16f);
-
-            NPC.target = 0;
+            SelectTarget();
         }
 
         int AttackIndex = 0;
@@ -66,9 +60,9 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
         public override void AI()
         {
-            ActivePlayer = Main.player[NPC.target];
 
-            if (ActivePlayer != null && !ActivePlayer.dead)
+
+            if (!ActivePlayer.dead && ActivePlayer != null)
             {
 
                 if (!AttackActive)
@@ -76,7 +70,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
                     timer[0]++;
                 }
 
-                //Streamlined Attack wratchet
+                //Streamlined Attack ratchet
 
                 switch (Phase) 
                 {
@@ -90,21 +84,22 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
                             shakePlayer.ScreenPosModified = true;
 
-                            shakePlayer.ScreenCenter = (NPC.Center + player.Center) / 2;
+                            shakePlayer.MoveScreen((NPC.Center + player.Center) / 2, 40f);
                         }
 
                         Phase1();
                         break;
                 }
-
+                if (!Targets.Contains(ActivePlayer) && Targets.Count > 0)
+                {
+                    SelectTarget();
+                }
                 UpdateTargets(80f * 16f);
-            }
-            else if((ActivePlayer.dead || !Targets.Contains(ActivePlayer)) && Targets.Count > 0)
-            {
-                SelectTarget();
             }
             else
             {
+                SelectTarget();
+
                 NPC.velocity.Y -= .2f;
                 NPC.EncourageDespawn(120);
 
@@ -122,21 +117,29 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             }
         }
 
-        private void UpdateTargets(float Dist)
+        private void UpdateTargets(float Range)
         {
-            for(int i = 0; i < Main.player?.Count(); i++)
+            for(int i = 0; i < Main.player?.Count(); i++) //For each player in the server
             {
                 Player select = Main.player[i];
 
-                float dist = ModMath.Delta(NPC.Center, select.Center).Length();
+                float dist = Vector2.Distance(NPC.Center, select.Center);
 
-                if(dist < Dist && !Targets.Contains(select))
+                //Check if the player is already a target
+                if (Targets.Contains(select))
+                {
+                    //If so, remover them from targets if they're out of range
+                    if (dist < Range)
+                    {
+                        Targets.Remove(select);
+                    }
+                    return;
+                }
+
+                //If the player is in range, set it as a target
+                if (dist < Range)
                 {
                     Targets.Add(select);
-                }
-                else if(Targets.Contains(select))
-                {
-                    Targets.Remove(select);
                 }
             }
         }
@@ -150,6 +153,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             if (Targets.Count > 0)
             {
                 NPC.target = Targets[Main.rand.Next(Targets.Count)].whoAmI;
+                ActivePlayer = Main.player[NPC.target];
             }
 
             NPC.netUpdate = false;

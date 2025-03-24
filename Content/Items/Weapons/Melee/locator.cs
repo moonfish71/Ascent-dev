@@ -1,7 +1,10 @@
 using Ascent.Content.Events.DarkNight;
+using Ascent.Content.Particles.ChainsAndLinks;
+using Ascent.Content.Particles.ChainsAndLinks.Worms;
 using Ascent.Core.ModPlayers;
 using Ascent.Core.ModWorlds;
 using Ascent.Core.Systems.Particles;
+using Ascent.Core.Systems.Particles.IKChain;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -22,8 +25,8 @@ namespace Ascent.Content.Items.Weapons.Melee
             Item.DamageType = DamageClass.Melee;
             Item.width = 40;
             Item.height = 40;
-            Item.useTime = 1;
-            Item.useAnimation = 1;
+            Item.useTime = 25;
+            Item.useAnimation = 25;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = 10000;
@@ -45,14 +48,10 @@ namespace Ascent.Content.Items.Weapons.Melee
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            position = Main.MouseWorld;
+            position = player.Center;
 
-            for (int i = 0; i < 10; i++)
-            {
-                velocity = new Vector2(25).RotateRandom(10);
+            IKChain.NewChain(Main.MouseWorld, player.Center, 50, new ApolloSkeleton());
 
-                Particle.NewParticle(new Vector3(position.X, position.Y, 0), new Particles.ExampleParticle(), new Vector3(0, -10, velocity.Y));
-            }
             return false;
         }
 

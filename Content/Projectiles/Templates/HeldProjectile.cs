@@ -26,6 +26,11 @@ namespace Ascent.Content.Projectiles.Templates
 
         public float timer = 0;
 
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            return base.Colliding(projHitbox, targetHitbox);
+        }
+
         public override void AI()
         {
             base.AI();

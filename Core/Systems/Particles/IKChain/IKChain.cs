@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,86 +11,105 @@ using Terraria;
 
 namespace Ascent.Core.Systems.Particles.IKChain
 {
-    public abstract class IKChain
+    public abstract class IKChain : Particle
     {
-        public static List<IKLink> links;
+        struct LinkTemplate
+        {
+            IKLink type;
+            float length;
+        }
 
-        public static List<IKLink> compositeLinks;
+        public List<IKLink> links;
 
-        public int ID;
+        public List<IKLink> compositeLinks;
 
-        public Vector2 based;
         public bool LockToBase = false;
 
-        public Vector2 target;
+        public Vector2 target = Vector2.Zero;
 
         public int length;
+        public double AngleRange = -1;
+        public double LinkAngle = 0;
 
         public IKChain()
         {
-            SetDefaults();
+            ManualUpdate = true;
+            links = new List<IKLink>();
+            compositeLinks = new List<IKLink>();
         }
 
-        public virtual void SetDefaults()
-        {
+        public virtual void SetUpCompositeLinks() { }
 
-        }
-
-        public void Update()
+        public override void Update()
         {
+            AI();
+
             if (LockToBase)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     SetOut();
                     Return();
                 }
-
-                SetRotation();
-
-                return;
+            }
+            else
+            {
+                SetOut();
             }
 
-            SetOut();
+            foreach (IKLink link in links)
+            {
+                if (link != null)
+                {
+                    link.Update();
 
-            SetRotation();
+                    link.position.Z = position.Z;
+                }
+            }
+
+            if (TimeLeft < 1)
+            {
+                foreach (IKLink link in links)
+                {
+                    if (link != null) { link.Kill(); }
+                }
+
+                Kill();
+            }
         }
 
+        public virtual void AI() { }
+
         #region Link Behaviors
+
         public void SetOut() 
         {
-            for(int j = (int)(links?.Count); j > 0; j++)
+            for (int j = links.Count - 1; j >= 0; j--)
             {
                 IKLink link = links[j];
 
-                link.Move(false);
+                if (link != null)
+                {
+                    link.Move(false);
+                }
             }
         }
         public void Return()
         {
-            for (int j = 0; j < links?.Count; j++)
+            for (int j = 0; j < links.Count - 1; j++)
             {
                 IKLink link = links[j];
 
-                link.Move(true);
-            }
-        }
-
-        public void SetRotation()
-        {
-            for (int j = 0; j < links?.Count; j++)
-            {
-                IKLink link = links[j];
-
-                Vector2 delta = link.back - link.front;
-
-                link.rotation = delta.ToRotation();
+                if (link != null)
+                {
+                    link.Move(true);
+                }
             }
         }
         #endregion
 
         #region Spawning
-        public static IKChain NewChain(Vector2 based, Vector2 target, int length, IKChain chain)
+        public static IKChain NewChain(Vector2 center2D, Vector2 target, int length, IKChain chain)
         {
             if (ParticleHandler.Particles.Count >= ParticleHandler.Particles.Capacity)
             {
@@ -97,46 +118,81 @@ namespace Ascent.Core.Systems.Particles.IKChain
 
             IKChain newChain = (IKChain)Activator.CreateInstance(chain.GetType());
 
-            newChain.based = based;
+            newChain.position.X = center2D.X;
+            newChain.position.Y = center2D.Y;
+
             newChain.target = target;
             newChain.length = length;
 
-            newChain.SetupLinks();
+            newChain.SetUpCompositeLinks();
 
-            ChainManager.chains.Add(newChain);
+            ParticleHandler.Particles.Add(newChain);
 
-            newChain.ID = ChainManager.chains.IndexOf(newChain);
+            ParticleHandler.IKChains.Add(newChain);
+
+            newChain.ID = ParticleHandler.Particles.IndexOf(newChain);
+
+            newChain.SetupLinks(newChain);
 
             return newChain;
         }
 
-        public void SetupLinks()
+        private void SetupLinks(IKChain chain)
         {
             int runningI = 0;
+
             for (int i = 0; i < length; i++) 
             {
-                IKLink newLink = (IKLink)Particle.NewParticle(based + new Vector2(compositeLinks[runningI].length * i, 0), compositeLinks[runningI], Vector2.Zero);
+                Vector2 pos2D = new Vector2(position.X, position.Y);
+
+                IKLink newLink = (IKLink)Particle.NewParticle(pos2D, compositeLinks[runningI], Vector2.Zero);
+
+                newLink.ManualUpdate = true;
 
                 newLink.ChainPos = i;
+                newLink.TimeLeft = int.MaxValue;
+                newLink.front = pos2D;
+
+                newLink.chain = chain;
+
+                CustomSpawnBehavior(chain, i);
 
                 links.Add(newLink);
 
                 runningI++;
+                
+                if (runningI > compositeLinks?.Count - 1)
+                {
+                    runningI = 0;
+                }
+            }
+
+            IKLink nullLink = null;
+            links.Add(nullLink);
+
+            for (int i = 0; i < links.Count - 1; i++)
+            {
+                IKLink link = links[i];
+
+                if (i == 0) 
+                {
+                    link.parent = null;
+                    link.child = links[1];
+                }
+                else
+                {
+                    link.parent = links[i - 1];
+                    link.child = links[i + 1];
+                }
             }
         }
+
+        public virtual void CustomSpawnBehavior(IKChain chain, int i) { }
         #endregion
-    }
 
-    public class ChainManager
-    {
-        public static List<IKChain> chains;
-
-        public static void Update()
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
-            foreach (IKChain chain in chains)
-            {
-                chain.Update();
-            }
+            return false;
         }
     }
 }

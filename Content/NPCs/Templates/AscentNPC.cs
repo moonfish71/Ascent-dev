@@ -42,7 +42,7 @@ namespace Ascent.Content.NPCs.Templates
             NPC.velocity *= drag;
         }
 
-        public virtual void Shoot(int projectile, Vector2 pos, Vector2 target, float speed = 0, bool friendly = false, int damage = 0, float knockBack = 0, float ai1 = 0, float ai2 = 0, float localAi1 = 0, float localAI2 = 0)
+        public virtual void Shoot(int projectile, Vector2 pos, Vector2 target, float speed = 0, bool friendly = false, int damage = 0, float knockBack = 0, float ai0 = 0, float ai1 = 0, float localAi0 = 0, float localAI1 = 0)
         {
             Vector2 delta = ModMath.Delta(pos, target);
 
@@ -68,10 +68,10 @@ namespace Ascent.Content.NPCs.Templates
                     proj.friendly = false;
                 }
 
-                proj.ai[0] = ai1;
-                proj.ai[1] = ai2;
-                proj.localAI[0] = localAi1;
-                proj.localAI[1] = localAI2;
+                proj.ai[0] = ai0;
+                proj.ai[1] = ai1;
+                proj.localAI[0] = localAi0;
+                proj.localAI[1] = localAI1;
             }
         }
         #endregion

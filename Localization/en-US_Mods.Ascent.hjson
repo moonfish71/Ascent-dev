@@ -56,7 +56,7 @@ NPCs: {
 	ThrallS.DisplayName: Thrall Drone
 	ThrallL.DisplayName: Thrall Supermajor
 	ThrallM.DisplayName: Thrall Soldier
-	AsterBoss.DisplayName: Fell Aster
+	AsterBoss.DisplayName: Aster
 	Alpha.DisplayName: CS-1 'Mercury'
 	BetaSpz.DisplayName: CS-2A 'Gemini-Alpha'
 	BetaRet.DisplayName: CS-2B 'Gemini-Beta'
@@ -67,7 +67,8 @@ Projectiles: {
 	FectoSpearProj.DisplayName: Conqueror's Talon
 	MadStar.DisplayName: Mad Star
 	EGG.DisplayName: E G G
-	TriggerFish.DisplayName: Trigger Fish
+	TriggerFish.DisplayName: Dual Triggerfish
+	FunnyLetters.DisplayName: Funny Letters
 }
 
 Configs: {

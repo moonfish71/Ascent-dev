@@ -11,6 +11,7 @@ namespace Ascent.Core.Systems.Particles
     public abstract class Particle
     {
         public virtual string TexturePath => PlaceHolderTx;
+        //public virtual string TexturePath => QuickDirectory.Textures + "ApolloBody";
 
         public Particle()
         {
@@ -64,6 +65,8 @@ namespace Ascent.Core.Systems.Particles
         public float TimeLeft = ModMath.SecondsToTicks(10);
 
         public virtual void Update() { }
+
+        public bool ManualUpdate = false;
 
         public Asset<Texture2D> texture;
 
@@ -157,7 +160,8 @@ namespace Ascent.Core.Systems.Particles
 
         public void Kill()
         {
-            ParticleHandler.BGParticles.RemoveAt(ID);
+            TimeLeft = 0;
+            Die = true;
         }
     }
 }

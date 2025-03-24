@@ -1,4 +1,5 @@
 ﻿using Ascent.Core;
+using Ascent.Core.ModPlayers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -41,7 +42,11 @@ namespace Ascent.Content.NPCs.Events.Starfall
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
+            ScreenMovementPlayer player = Main.LocalPlayer.GetModPlayer<ScreenMovementPlayer>();
+
             SoundEngine.PlaySound(SoundID.NPCDeath1, Projectile.Center);
+
+            player.ScreenShakeStrength = 10 * Math.Clamp(400f - (float)Vector2.Distance(Main.LocalPlayer.Center, Projectile.Center), 0f, 1f);
 
             if (Main.netMode != 1)
             {

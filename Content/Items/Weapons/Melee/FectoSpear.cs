@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Threading;
 using Terraria.DataStructures;
 using Mono.Cecil;
+using System.Diagnostics;
 
 namespace Ascent.Content.Items.Weapons.Melee
 {
@@ -129,6 +130,10 @@ namespace Ascent.Content.Items.Weapons.Melee
                         lengthMod = 150;
                         break;
                 }
+                //"http://www.google.com"
+                //System.Diagnostics.Process.Start("https://www.youtube.com/watch?v=C0PgRC2BF6c");
+                //System.Diagnostics.Process.Start("http://www.google.com");
+
             }
 
             timer++;

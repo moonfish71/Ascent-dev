@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Ascent.Configs;
 using Ascent.Core.Systems.Particles.IKChain;
+using Terraria.GameContent.ItemDropRules;
 
 namespace Ascent.Core.Systems.Particles
 {
@@ -21,6 +22,8 @@ namespace Ascent.Core.Systems.Particles
         public static List<Particle> PLParticles;
         public static List<Particle> FGParticles;
 
+        public static List<Particle> IKChains;
+
         public static void SetHooks()
         {
             Particles = new List<Particle>(ParticleCount);
@@ -28,6 +31,8 @@ namespace Ascent.Core.Systems.Particles
             BGParticles = new List<Particle>(ParticleCount);
             PLParticles = new List<Particle>(ParticleCount);
             FGParticles = new List<Particle>(ParticleCount);
+
+            IKChains = new List<Particle>(ParticleCount);
 
             On_Main.DrawBackGore += DrawBG;
             On_Main.DrawInfernoRings += DrawFG;
@@ -42,6 +47,8 @@ namespace Ascent.Core.Systems.Particles
             BGParticles = null;
             PLParticles = null;
             FGParticles = null;
+
+            IKChains = null;
 
             On_Main.DrawBackGore -= DrawBG;
             On_Main.DrawInfernoRings -= DrawFG;
@@ -63,15 +70,22 @@ namespace Ascent.Core.Systems.Particles
 
                     UpdateArrays(particle);
 
-                    particle.position += particle.velocity;
-                    particle.Update();
+                    if (IKChains.Contains(particle))
+                    {
+                        particle.Update();
+                    }
+                    else if (!particle.ManualUpdate)
+                    {
+                        particle.position += particle.velocity;
+                        particle.Update();
+                    }
 
                     if (Math.Sign(particle.position.Z) != Math.Sign(particle.OldPos[0].Z))
                     {
                         CategorizeParticle(particle);
                     }
 
-                    if (particle.TimeLeft <= 0 | particle.Die)
+                    if (particle.TimeLeft <= 0 || particle.Die)
                     {
                         Dead.Add(particle);
                     }
@@ -84,8 +98,6 @@ namespace Ascent.Core.Systems.Particles
             }
 
             UpdateLists();
-
-            ChainManager.Update();
 
             orig();
         }
@@ -241,7 +253,7 @@ namespace Ascent.Core.Systems.Particles
                         texture.Value,
                         DrawPosition - Main.screenPosition,
                         particle.frame,
-                        particle.drawColor,
+                        particle.drawColor * (particle.Opacity / 255f),
                         (float)particle.rotation,
                         particle.frame.Size() / 2,
                         particle.StretchScale * particle.scale * scale3D,
@@ -261,6 +273,7 @@ namespace Ascent.Core.Systems.Particles
             LookforDead(BGParticles);
             LookforDead(PLParticles);
             LookforDead(FGParticles);
+            LookforDead(IKChains);
         }
 
         private static void LookforDead(List<Particle> reference)

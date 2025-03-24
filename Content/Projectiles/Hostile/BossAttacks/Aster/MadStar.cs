@@ -1,12 +1,8 @@
-﻿using Ascent.Content.NPCs.Templates;
-using Ascent.Core;
+﻿using Ascent.Core;
 using Ascent.Core.Systems.Particles;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 using static Ascent.Core.QuickDirectory;
 

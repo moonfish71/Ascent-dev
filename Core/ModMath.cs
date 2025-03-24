@@ -107,5 +107,8 @@ namespace Ascent.Core
             ? (Math.Pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
             : (Math.Pow(2 * x - 2, 2) * ((c2 + 1) * (x* 2 - 2) + c2) + 2) / 2);
         }
+        public static float easeInOutQuad(float x) {
+            return x < 0.5 ? 2 * x* x : 1 - (float)Math.Pow(-2 * x + 2, 2) / 2;
+        }
     }
 }
