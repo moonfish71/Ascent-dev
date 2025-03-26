@@ -9,11 +9,9 @@ namespace Ascent.Core.ModPlayers
     {
         public float ScreenShakeStrength;
         public Vector2 ScreenCenter;
-        public float ScreenScale;
         
         private Vector2 OldScreenCenter;
         private Vector2 BaseScreenPos;
-
 
         public bool ScreenPosModified;
 
@@ -48,6 +46,25 @@ namespace Ascent.Core.ModPlayers
 
                     Main.screenPosition = ScreenCenter - (Main.ScreenSize.ToVector2() / 2);
                 } 
+                InCounter = 0;
+            }
+            else
+            {
+                OutCounter = 0;
+                OldScreenCenter = ScreenCenter;
+
+                Main.screenPosition = ScreenCenter - (Main.ScreenSize.ToVector2() / 2);
+            }
+
+            if (!ScreenPosModified)
+            {
+                if (OutCounter < 40f)
+                {
+                    ScreenCenter = Vector2.Lerp(OldScreenCenter, BaseScreenPos + (Main.ScreenSize.ToVector2() / 2), ModMath.easeInOutQuad(OutCounter / 40f));
+                    OutCounter++;
+
+                    Main.screenPosition = ScreenCenter - (Main.ScreenSize.ToVector2() / 2);
+                }
                 InCounter = 0;
             }
             else
