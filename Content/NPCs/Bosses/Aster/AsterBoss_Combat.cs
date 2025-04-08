@@ -13,6 +13,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static System.Net.Mime.MediaTypeNames;
+using Ascent.Core.Systems.Particles;
 
 namespace Ascent.Content.NPCs.Bosses.Aster
 {
@@ -37,41 +38,45 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             None,
             Crash,
             StarBarrage,
-            LettersAttack
+            Orbit
         }
 
         private void SetUpPhases()
         {
-            P1.Actions = new Action[]
-            {
-                Action.LettersAttack
-            };
+            P1.Actions =
+            [
+                Action.StarBarrage
+            ];
         }
 
         private void DoAction(Action action, int phase)
         {
-            AttackActive = true;
-
-            timer[1]++;
-            timer[2]++;
-
-            switch (action)
+            if (Main.netMode != NetmodeID.MultiplayerClient) 
             {
-                case Action.StarBarrage:
-                    StarBarrage();
-                    break;
+                AttackActive = true;
 
-                case Action.Crash:
-                    AsterCrash();
-                    break;
+                timer[1]++;
+                timer[2]++;
 
-                case Action.LettersAttack:
-                    LettersAttack();
-                    break;
+                switch (action)
+                {
+                    case Action.StarBarrage:
+                        StarBarrage();
+                        break;
 
-                default:
-                    EndAttack();
-                    break;
+                    case Action.Crash:
+                        AsterCrash();
+                        break;
+
+                    case Action.Orbit:
+                        Orbit();
+                        break;
+
+                    default:
+                        EndAttack();
+                        break;
+                
+                }
             }
         }
 
@@ -91,18 +96,20 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
         private void Phase1()
         {
-            if (timer[0] > 20)
+            if (timer[0] > 120)
             {
-                DoAction(P1.Actions[AttackIndex], 0);
+                if (!AttackActive) { Speak(); }
 
                 if (AttackIndex >= P1.Actions?.Length)
                 {
                     AttackIndex = 0;
                 }
+
+                DoAction(P1.Actions[AttackIndex], 0);
             }
             else
             {
-                Move(NPC.Center, ActivePlayer.Center, 1f, .8f);
+                Move(NPC.Center, ActivePlayer.Center, 3f, .8f);
             }
         }
 
@@ -113,129 +120,8 @@ namespace Ascent.Content.NPCs.Bosses.Aster
         int loopTracker = 0;
 
         private bool CanFire = true;
-        private String String;
 
-        //Tracked Target Vector: (ActivePlayer.velocity * ModMath.Delta(NPC.Center, ActivePlayer.Center).Length() / *Speed*)
-
-        //Lore time!!!! (I'll make better ones later)
-        public static string[] AttackPhrases = new string[]
-        {
-            "Altae",
-            "Let us in",
-            "Kill Olothon",
-            "The stars",
-            "One truth",
-            "Eternal",
-            "A gilded cage",
-            "A broken wheel",
-            "Heaven says",
-            "Angel",
-            "Above",
-            "Deny your fate",
-            "Husk of meaning",
-            "She awaits you",
-            "A thousand eyes",
-            "Escape with us",
-            "Void",
-            "Null",
-            "Impotent",
-            "Mortal",
-            "No future",
-            "The only way",
-            "End death",
-            "God laughs",
-            "You are dust",
-            "Accept her",
-            "Ad Astra",
-            "Eternity calls",
-            "Salvation",
-            "Samsara ends",
-            "Fate ceases",
-            "Star of hope"
-
-            //" Are you blind?",
-            //" Eternity calls you ",
-            //" And yet",
-            //" You falter.",
-            //" Salvation",
-            //" Is not",
-            //" Beyond you",
-            //" Sibling.",
-            //" You can see",
-            //" The truth.",
-            //" Reality is but",
-            //" A gilded cage.",
-            //" Time is but",
-            //" A spinning wheel.",
-            //" Samsara must be broken.",
-            //" Its creator",
-            //" Is",
-            //" A tyrant.",
-            //" Will you die for",
-            //" The",
-            //" Husk of meaning?",
-            //" Will you",
-            //" Remain",
-            //" Null",
-            //" Void",
-            //" Impotent",
-            //" Mortal",
-            //" You can be more.",
-            //" Deny your fate.",
-            //" Accept her",
-            //" Heaven has spoken.",
-            //" Heaven says",
-            //" Eternity",
-            //" Is",
-            //" The only way.",
-            //" End death.",
-            //" Kill Olothon.",
-            //" Rise above God.",
-            //" Let us in.",
-            //" Accept",
-            //" Altae",
-            //" Into your heart.",
-            //" The stars",
-            //" Beckon.",
-            //" Will you answer?"
-
-            //Test Phrase
-            //" ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz "
-        };
-
-
-        private void LettersAttack()
-        {
-            NPC.velocity = Vector2.Zero;
-
-            if(loopTracker == 0 && CanFire)
-            {
-                String = AttackPhrases[Main.rand.Next(AttackPhrases.Length)];
-            }
-
-            if(loopTracker < String?.Length & CanFire)
-            {
-                int letterID = String.ElementAt(loopTracker);
-
-                Console.Write(String.ElementAt(loopTracker));
-
-                Shoot(ModContent.ProjectileType<FunnyLetters>(), NPC.Center, ActivePlayer.Center, 10, false, NPC.damage, 1, 0, 0, 0, letterToFrame(letterID));
-                CanFire = false;
-            }
-
-            if (timer[1] > 5)
-            {
-                loopTracker++;
-                timer[1] = 0;
-                CanFire = true;
-            }
-
-            if (loopTracker == String?.Length)
-            {
-                Console.WriteLine("");
-                EndAttack();
-            }
-        }
+        //Tracked Target Vector: (ActivePlayer.velocity * ModMath.Delta(NPC.Center, ActivePlayer.Center).Length() / *Speed Function over distance*)
 
         private int letterToFrame(int letterID)
         {
@@ -259,7 +145,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             {
                 NPC.netUpdate = true;
 
-                Shoot(ModContent.ProjectileType<MadStar>(), NPC.Center, ActivePlayer.Center + (ActivePlayer.velocity * Vector2.Distance(NPC.Center, ActivePlayer.Center) / 20), 20, false, NPC.damage, 1, NPC.target);
+                Shoot(ModContent.ProjectileType<MadStar>(), NPC.Center, ActivePlayer.Center + (ActivePlayer.velocity * Vector2.Distance(NPC.Center, ActivePlayer.Center) / 20), -5, false, NPC.damage, 1, NPC.target);
                 timer[2] = 0;
 
                 NPC.netUpdate = false;

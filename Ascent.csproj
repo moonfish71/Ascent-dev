@@ -1,4 +1,4 @@
-
+﻿
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
@@ -6,9 +6,9 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\Textures\NPCs\Bosses\Aster\Aster_Head_Boss.png" />
     <None Remove="Assets\Textures\Projectiles\Hostile\BossAttacks\Aster\MadStar.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Remove="content\shaders\screen\ScreenDarkness.fx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Effects\" />
@@ -18,5 +18,6 @@
     <Folder Include="Content\Items\Weapons\Summon\" />
     <Folder Include="Content\NPCs\Bosses\TheImpaled\" />
     <Folder Include="Content\NPCs\Events\Starfall\Minibosses\" />
+    <Folder Include="Content\Shaders\Screen\" />
   </ItemGroup>
 </Project>

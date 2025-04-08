@@ -8,53 +8,42 @@ using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
 using static Ascent.Core.QuickDirectory;
+using Ascent.Core.Systems.Particles;
 
 namespace Ascent.Content.Projectiles.Hostile.BossAttacks.Aster
 {
-    public class FunnyLetters : ModProjectile
+    public class FunnyLetters : Particle
     {
-        public override string Texture => AsterProjTex + Name;
-
-        public override void SetStaticDefaults()
-        {
-            Main.projFrames[Projectile.type] = 27;
-        }
+        public override string TexturePath => AsterProjTex + "FunnyLetters";
 
         public override void SetDefaults()
         {
-            Projectile.width = 14;
-            Projectile.height = Projectile.width;
-            Projectile.friendly = false;
-            Projectile.hostile = true;
-            Projectile.tileCollide = false;
+            frameCount.Y = 27f;
+            TimeLeft = 60;
         }
 
-        public float timer
-        {
-            get => Projectile.localAI[0];
-            set => Projectile.localAI[0] = value;
-        }
         public float letter
         {
-            get => Projectile.localAI[1];
-            set => Projectile.localAI[1] = value;
+            get => ai[0];
+            set => ai[0] = value;
         }
 
-        public override void AI()
+        public override void Update()
         {
-            timer++;
-            Projectile.frame = (int)letter;
-            Projectile.velocity.Y += 0.01f * (float)Math.Sin(timer / 20);
+            frame.Y = (int)letter * 34;
+            velocity.Y = 1f;
+            Opacity -= 8;
             if((int)letter <= 0)
             {
-                Projectile.Kill();
+                Kill();
             }
         }
 
-        public override bool PreDraw(ref Color lightColor)
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
-            lightColor = Color.White;
-            return base.PreDraw(ref lightColor);
+            drawColor = Color.White;
+
+            return true;
         }
     }
 }

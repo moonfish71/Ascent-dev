@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader;
 using static Ascent.Core.QuickDirectory;
 
 namespace Ascent.Content.NPCs.Bosses.Aster
 {
+    [AutoloadBossHead]
     public partial class AsterBoss : AscentNPC
     {
         public override string Texture => BossTex + "Aster/Aster";
@@ -29,10 +31,20 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.aiStyle = -1;
+            NPC.BossBar = ModContent.GetInstance<AsterBossBar>();
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Sound/Music/Aster2MainLoop");
 
             SetUpPhases();
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Visuals.Meteor,
+                new FlavorTextBestiaryInfoElement("Once a member of the former Duy'axxi Empire, this self-proclaimed 'Angel of the Last Star' now roams the universe with countless of its kin, spreading the despair and discontent of their goddess to any inadequately defended planet. \n \nUsually, there'd be thousands of them in the invading force. Something must have kept the rest out.")
+            }); ;
         }
 
         public ref float Phase => ref NPC.ai[0];
@@ -62,7 +74,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
         {
 
 
-            if (!ActivePlayer.dead && ActivePlayer != null)
+            if (ActivePlayer != null && !ActivePlayer.dead)
             {
 
                 if (!AttackActive)
@@ -84,24 +96,28 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
                             shakePlayer.ScreenPosModified = true;
 
-                            shakePlayer.MoveScreen((NPC.Center + player.Center) / 2, 40f);
+                            shakePlayer.MoveScreen((new Vector2(spr.position.X, spr.position.Y) + player.Center) / 2, 40f);
                         }
-
                         Phase1();
                         break;
                 }
-                if (!Targets.Contains(ActivePlayer) && Targets.Count > 0)
-                {
-                    SelectTarget();
-                }
-                UpdateTargets(80f * 16f);
+                UpdateTargets(Main.screenWidth);
+
+                timer[3] = 0;
             }
             else
             {
-                SelectTarget();
+                timer[3]++;
 
-                NPC.velocity.Y -= .2f;
-                NPC.EncourageDespawn(120);
+                if (timer[3] < 180)
+                {
+                    SelectTarget(Main.screenWidth);
+                }
+                else
+                {
+                    NPC.velocity.Y -= .2f;
+                    NPC.EncourageDespawn(120);
+                }
 
                 foreach (Player player in Targets)
                 {
@@ -128,27 +144,31 @@ namespace Ascent.Content.NPCs.Bosses.Aster
                 //Check if the player is already a target
                 if (Targets.Contains(select))
                 {
-                    //If so, remover them from targets if they're out of range
-                    if (dist < Range)
+                    //If so, remove them from targets if they're out of range
+                    if (dist > Range)
                     {
                         Targets.Remove(select);
+                        if(select == ActivePlayer)
+                        {
+                            ActivePlayer = null;
+                        }
                     }
                     return;
                 }
 
                 //If the player is in range, set it as a target
-                if (dist < Range)
+                if (dist <= Range)
                 {
                     Targets.Add(select);
                 }
             }
         }
 
-        private void SelectTarget()
+        private void SelectTarget(float radius = 16*80)
         {
             NPC.netUpdate = true;
 
-            UpdateTargets(80f * 16f);
+            UpdateTargets(radius);
 
             if (Targets.Count > 0)
             {

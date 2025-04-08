@@ -145,13 +145,14 @@ namespace Ascent.Core.Systems.Particles.IKChain
             {
                 Vector2 pos2D = new Vector2(position.X, position.Y);
 
-                IKLink newLink = (IKLink)Particle.NewParticle(pos2D, compositeLinks[runningI], Vector2.Zero);
+                IKLink newLink = (IKLink)NewParticle(pos2D, compositeLinks[runningI], Vector2.Zero);
 
                 newLink.ManualUpdate = true;
 
                 newLink.ChainPos = i;
                 newLink.TimeLeft = int.MaxValue;
                 newLink.front = pos2D;
+                newLink.back = pos2D + Vector2.One;
 
                 newLink.chain = chain;
 

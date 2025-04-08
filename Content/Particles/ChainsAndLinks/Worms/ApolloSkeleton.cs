@@ -18,6 +18,7 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
         public override void SetDefaults()
         {
             TimeLeft = 2400;
+            LockToBase = false;
         }
 
         public override void SetUpCompositeLinks()
@@ -45,10 +46,7 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
 
         public override void AI()
         {
-            target = Main.MouseWorld;
-            LockToBase = true;
-            position.X = Main.LocalPlayer.position.X;
-            position.Y = Main.LocalPlayer.position.Y;
+            target = Vector2.Lerp(target, Main.MouseWorld, 0.05f);
         }
     }
 
@@ -57,6 +55,7 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
         public override void SetDefaults()
         {
             length = 104;
+            AngleRange = MathHelper.ToRadians(35);
         }
     }
 
@@ -67,6 +66,7 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
         public override void SetDefaults()
         {
             length = 52;
+            AngleRange = MathHelper.ToRadians(35f);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition)
@@ -95,6 +95,7 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
         public override void SetDefaults()
         {
             length = 76;
+            AngleRange = MathHelper.ToRadians(35);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Ascent.Core.Systems.Particles
             OldVel = new Vector3[10];
             OldRot = new double[10];
 
-            texture = ModContent.Request<Texture2D>(TexturePath);
+            texture = ModContent.Request<Texture2D>(TexturePath, AssetRequestMode.ImmediateLoad);
 
             frame = new Rectangle(0, 0, (int)(texture.Width() / frameCount.X), (int)(texture.Height() / frameCount.Y));
         }
@@ -64,6 +64,8 @@ namespace Ascent.Core.Systems.Particles
 
         public float TimeLeft = ModMath.SecondsToTicks(10);
 
+        public float[] ai = new float[2];
+
         public virtual void Update() { }
 
         public bool ManualUpdate = false;
@@ -87,7 +89,7 @@ namespace Ascent.Core.Systems.Particles
 
         public virtual void OnDeath() { }
 
-        public static Particle NewParticle(Vector2 position2D, Particle particle, Vector2 velcoity2D, double rotation = 0, float scale = 1, float Opacity = 255)
+        public static Particle NewParticle(Vector2 position2D, Particle particle, Vector2 velcoity2D, double rotation = 0, float scale = 1, float Opacity = 255, float ai0 = 0, float ai1 = 0)
         {
             if (ParticleHandler.Particles.Count >= ParticleHandler.Particles.Capacity)
             {
@@ -106,6 +108,9 @@ namespace Ascent.Core.Systems.Particles
             newParticle.scale = scale;
             newParticle.Opacity = Opacity;
 
+            newParticle.ai[0] = ai0;
+            newParticle.ai[1] = ai1;
+
             ParticleHandler.Particles.Add(newParticle);
 
             ParticleHandler.PLParticles.Add(newParticle);
@@ -117,7 +122,7 @@ namespace Ascent.Core.Systems.Particles
             return newParticle;
         }
 
-        public static Particle NewParticle(Vector3 position, Particle particle, Vector3 velcoity, double rotation = 0, float scale = 1, float Opacity = 255)
+        public static Particle NewParticle(Vector3 position, Particle particle, Vector3 velcoity, double rotation = 0, float scale = 1, float Opacity = 255, float ai0 = 0, float ai1 = 0)
         {
             if (ParticleHandler.Particles.Count >= ParticleHandler.Particles.Capacity)
             {
@@ -133,6 +138,9 @@ namespace Ascent.Core.Systems.Particles
             newParticle.rotation = rotation;
             newParticle.scale = scale;
             newParticle.Opacity = Opacity;
+
+            newParticle.ai[0] = ai0;
+            newParticle.ai[1] = ai1;
 
             ParticleHandler.Particles.Add(newParticle);
 

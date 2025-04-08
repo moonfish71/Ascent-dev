@@ -36,6 +36,7 @@ namespace Ascent.Core.Systems.Particles
 
             On_Main.DrawBackGore += DrawBG;
             On_Main.DrawInfernoRings += DrawFG;
+            On_Main.DrawProjectiles += DrawPL;
 
             On_Dust.UpdateDust += Update;
         }
@@ -196,8 +197,6 @@ namespace Ascent.Core.Systems.Particles
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            DrawList(spriteBatch, PLParticles);
-
             orig(self);
 
             IComparer<Particle> comparer = new ParallaxComparer();
@@ -205,6 +204,17 @@ namespace Ascent.Core.Systems.Particles
             FGParticles.Sort(comparer);
 
             DrawList(spriteBatch, FGParticles);
+        }
+        private static void DrawPL(On_Main.orig_DrawProjectiles orig, Main self)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+
+            spriteBatch.Begin();
+
+            DrawList(spriteBatch, PLParticles);
+            spriteBatch.End();
+
+            orig(self);
         }
 
         private static void DrawList(SpriteBatch spriteBatch, List<Particle> reference)
@@ -242,7 +252,7 @@ namespace Ascent.Core.Systems.Particles
 
                 Color lightColour = Lighting.GetColor((int)(DrawPosition.X / 16f), (int)(DrawPosition.Y / 16f));
                 Color frontColour = (pos2D.Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 85);
-                particle.drawColor = Color.Lerp(lightColour, frontColour, (ModMath.ZToParallax(particle.position.Z) - 0.25f) / 1.25f);
+                particle.drawColor = Color.Lerp(lightColour, frontColour, 10*ModMath.ZToParallax(particle.position.Z - 5500));
 
                 bool PreDraw = particle.PreDraw(spriteBatch, DrawPosition);
 

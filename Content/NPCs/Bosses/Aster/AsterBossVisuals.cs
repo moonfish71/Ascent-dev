@@ -16,6 +16,7 @@ using Terraria.ID;
 using Ascent.Core;
 using Mono.Cecil;
 using Terraria.Graphics.Renderers;
+using Ascent.Content.Projectiles.Hostile.BossAttacks.Aster;
 
 namespace Ascent.Content.NPCs.Bosses.Aster
 {
@@ -51,6 +52,122 @@ namespace Ascent.Content.NPCs.Bosses.Aster
                 NPC.dontTakeDamage = false;
             }
         }
+
+        #region Speak
+
+        private String String;
+
+        //Lore time!!!! (I'll make better ones later)
+        public static string[] AttackPhrases = new string[]
+        {
+            "Altae",
+            "Let us in",
+            "Kill Olothon",
+            "The stars beckon",
+            "One truth",
+            "Eternal",
+            "A gilded cage",
+            "A broken wheel",
+            "Heaven says",
+            "Angel",
+            "Above",
+            "Deny your fate",
+            "Husk of meaning",
+            "She awaits you",
+            "A thousand eyes",
+            "Escape with us",
+            "Void",
+            "Null",
+            "Impotent",
+            "Mortal",
+            "No future",
+            "The only way",
+            "End death",
+            "God laughs",
+            "You are dust",
+            "Accept her",
+            "Ad Astra",
+            "Eternity calls",
+            "Salvation",
+            "Samsara ends",
+            "Fate ceases",
+            "Star of hope"
+
+            //" Are you blind?",
+            //" Eternity calls you ",
+            //" And yet",
+            //" You falter.",
+            //" Salvation",
+            //" Is not",
+            //" Beyond you",
+            //" Sibling.",
+            //" You can see",
+            //" The truth.",
+            //" Reality is but",
+            //" A gilded cage.",
+            //" Time is but",
+            //" A spinning wheel.",
+            //" Samsara must be broken.",
+            //" Its creator",
+            //" Is",
+            //" A tyrant.",
+            //" Will you die for",
+            //" The",
+            //" Husk of meaning?",
+            //" Will you",
+            //" Remain",
+            //" Null",
+            //" Void",
+            //" Impotent",
+            //" Mortal",
+            //" You can be more.",
+            //" Deny your fate.",
+            //" Accept her",
+            //" Heaven has spoken.",
+            //" Heaven says",
+            //" Eternity",
+            //" Is",
+            //" The only way.",
+            //" End death.",
+            //" Kill Olothon.",
+            //" Rise above God.",
+            //" Let us in.",
+            //" Accept",
+            //" Altae",
+            //" Into your heart.",
+            //" The stars",
+            //" Beckon.",
+            //" Will you answer?"
+
+            //Test Phrase
+            //" ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz "
+        };
+
+        private void Speak(string Dialogue = null)
+        {
+            if (Dialogue == null || Dialogue.Length == 0)
+            {
+                String = AttackPhrases[Main.rand.Next(AttackPhrases.Length)];
+            }
+            else
+            {
+                String = Dialogue;
+            }
+
+            for (int i = 0; i < String?.Length; i++)
+            {
+                int letterID = String.ElementAt(i);
+                float PhraseWidth = (float)String.Length * 40 / 2;
+
+                Console.Write((char)letterID);
+
+                Vector2 letterSource = NPC.Center + new Vector2(-PhraseWidth + (40 * i), 20);
+                Particle.NewParticle(new Vector3(letterSource.X, letterSource.Y, Z), new FunnyLetters(), new Vector3(0, 10f, 10), 0, 1, 255, letterToFrame(letterID));
+            }
+
+            Console.WriteLine("");
+        }
+        #endregion
     }
 
     public class AsterSprite : Particle
@@ -103,7 +220,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
                 Vector2 flatVel = new Vector2(velocity.X, velocity.Y);
 
-                float speedScale = (float)(2 / (1 + Math.Pow(Math.E, -flatVel.Length() / 4)) - 1);
+                float speedScale = (float)(2 / (1 + Math.Pow(Math.E, -flatVel.Length() / 8)) - 1);
 
                 animTimer[0]++;
 
@@ -122,9 +239,9 @@ namespace Ascent.Content.NPCs.Bosses.Aster
                     spriteBatch.Draw
                         (
                             aster.speedTex,
-                            drawPosition2 - Main.screenPosition + new Vector2(20 * scale * speedScale, 0).RotatedBy((animTimer[0] / 7) + (MathHelper.TwoPi / 3 * i)),
-                            speedSource,
-                            Color.Magenta * (parent.Opacity / 20 * (flatVel.Length() / 10)),
+                            drawPosition2 - Main.screenPosition + new Vector2(20 * scale * speedScale * speedScale, 0).RotatedBy((animTimer[0] / 7) + (MathHelper.TwoPi / 3 * i)),
+                            speedSource, 
+                            Color.Magenta * Math.Clamp(Opacity / (25.5f * 20) * Math.Abs(flatVel.Length() / 10), 0f, 0.5f),
                             flatVel.ToRotation() + (MathHelper.PiOver2 * 3),
                             aster.speedTex.Size() / 2,
                             scale * 4f * speedScale,
@@ -138,7 +255,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
                         aster.speedTex,
                         drawPosition2 - Main.screenPosition - new Vector2(0, 50 * scale * speedScale).RotatedBy(flatVel.ToRotation() + (MathHelper.PiOver2)),
                         speedSource,
-                        Color.White * (parent.Opacity / 16 * (flatVel.Length() / 2)),
+                        new Color(255, 248, 231) * (Opacity / 16 * (flatVel.Length() / 2)),
                         flatVel.ToRotation() + (MathHelper.PiOver2 * 3),
                         aster.speedTex.Size() / 2,
                         (float)(scale * 2f * speedScale + (0.1 * Math.Sin(animTimer[0] / 7 * MathHelper.PiOver2))),
@@ -171,7 +288,16 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
                 #region Eye
 
-                Vector2 delta = ModMath.Delta(drawPosition, Main.player[parent.target].Center);
+                Vector2 delta;
+
+                if(parent.target == -1)
+                {
+                    delta = Vector2.Zero;
+                }
+                else
+                {
+                    delta = ModMath.Delta(drawPosition, Main.player[parent.target].Center);
+                }
 
                 Vector2 EyeOffset = 4 * Vector2.Normalize(delta) * Math.Clamp(delta.Length() / 1000f, 0, 1);
 

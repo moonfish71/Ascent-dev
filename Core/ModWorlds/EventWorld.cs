@@ -22,6 +22,7 @@ namespace Ascent.Core.ModWorlds
         public static bool StarfallUp;
 
         public static bool DownedStarfall;
+        public static bool DownedAster;
 
         public override void OnWorldLoad()
         {

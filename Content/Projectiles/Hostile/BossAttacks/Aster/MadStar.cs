@@ -21,14 +21,11 @@ namespace Ascent.Content.Projectiles.Hostile.BossAttacks.Aster
             Projectile.tileCollide = true;
         }
 
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            Projectile.Kill();
-            return base.OnTileCollide(oldVelocity);
-        }
-
         public override void AI()
         {
+            Player player = Main.player[(int)Projectile.ai[0]];
+
+            Projectile.velocity += Vector2.Normalize(player.Center - Projectile.Center);
             Projectile.rotation += Math.Clamp(Projectile.velocity.X / 30, -1f, 1f);
         }
     }
