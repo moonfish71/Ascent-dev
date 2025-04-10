@@ -17,7 +17,7 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
     {
         public override void SetDefaults()
         {
-            TimeLeft = 2400;
+            TimeLeft = ModMath.SecondsToTicks(60);
             LockToBase = false;
         }
 

@@ -41,11 +41,11 @@ namespace Ascent.Content.Events.Starfall
         {
             wavetimer++;
 
-            if (Main.rand.NextBool(60))
+            if (Main.rand.NextBool(90))
             {
-                for (int i = 0; i < Main.rand.Next(1, 4); i++)
+                for (int i = 0; i < Main.rand.Next(1, 3); i++)
                 {
-                    Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), CentralCoords + new Vector2(Main.rand.NextFloat(-1000f, 1000f), -850), Vector2.Zero, ModContent.ProjectileType<EGG>(), 50, 10);
+                    Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), CentralCoords + new Vector2(750 - (1500f * Main.rand.Next(0, 2)), -850), Vector2.Zero, ModContent.ProjectileType<EGG>(), 50, 10);
                 }
             }
         }

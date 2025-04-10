@@ -30,7 +30,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
         {
             NPC.width = 32;
             NPC.height = 32;
-            NPC.lifeMax = 100;
+            NPC.lifeMax = 50;
             NPC.aiStyle = -1;
             NPC.damage = 60;
             NPC.knockBackResist = 0;
