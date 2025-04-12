@@ -35,7 +35,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
             NPC.damage = 60;
             NPC.knockBackResist = 0;
             NPC.defense = 1;
-            NPC.noGravity = true;
+            NPC.noGravity = false;
             NPC.noTileCollide = false;
         }
 
@@ -147,7 +147,6 @@ namespace Ascent.Content.NPCs.Events.Starfall
              * Other states do something else idk
              */
 
-            NPC.velocity.Y += 5;
 
             SetNewState();
         }
@@ -187,7 +186,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
                     }
                     break;
                 case 1:
-                    if (delta.Length() > 400f && Bottom.HasTile) ;
+                    if (delta.Length() > 400f && (NPC.velocity.Y == 0))
                     {
                         State = 0;
                         NPC.noTileCollide = false;

@@ -44,9 +44,15 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
             }
         }
 
+        public override void OnSpawn()
+        {
+            target = new Vector2 (position.X, position.Y);
+        }
+
         public override void AI()
         {
-            target = Vector2.Lerp(target, Main.MouseWorld, 0.05f);
+            Vector2 TargetVelocity = 2f * Vector2.Normalize(Main.LocalPlayer.Center - target);
+            target += TargetVelocity;
         }
     }
 
