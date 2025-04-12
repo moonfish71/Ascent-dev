@@ -44,7 +44,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
             bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Visuals.Meteor,
-                new FlavorTextBestiaryInfoElement("A thrall of the Astral Gestalt. This thrall has been warped into a spider-like form, letting it deftly jump and climb walls. It has a habit of eating faces.")
+                new FlavorTextBestiaryInfoElement("A thrall of the Astral Gestalt. This thrall has been shaped into a spider-like form, letting it deftly jump and climb walls. It beams the dark truths of its kin directly into the skulls of those it latches onto.")
             }); ;
         }
 

@@ -42,7 +42,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
             bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Visuals.Meteor,
-                new FlavorTextBestiaryInfoElement("A thrall of the Astral Gestalt. This thrall has developed a pair of knife-like limbs, giving it vastly increased reach and damage.")
+                new FlavorTextBestiaryInfoElement("A thrall of the Astral Gestalt. This thrall has been granted a pair of knife-like limbs to tear through those that would stop the propagation of The Word.")
             }); ;
         }
 
