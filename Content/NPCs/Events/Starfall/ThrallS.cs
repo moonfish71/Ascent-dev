@@ -35,7 +35,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
             NPC.damage = 60;
             NPC.knockBackResist = 0;
             NPC.defense = 1;
-            NPC.noGravity = false;
+            NPC.noGravity = true;
             NPC.noTileCollide = false;
         }
 
@@ -62,6 +62,10 @@ namespace Ascent.Content.NPCs.Events.Starfall
         Tile FrontBottom;
         Tile FrontTop;
 
+        Tile Top;
+        Tile Bottom;
+        Tile Back;
+
         bool LineOfSight;
 
         public override void AI()
@@ -76,9 +80,9 @@ namespace Ascent.Content.NPCs.Events.Starfall
             FrontBottom = Framing.GetTileSafely(x, y + 1);
             FrontTop = Framing.GetTileSafely(x, y - 1);
 
-            Tile Top = Framing.GetTileSafely(x - NPC.direction, y - 1);
-            Tile Bottom = Framing.GetTileSafely(x - NPC.direction, y + 1);
-            Tile Back = Framing.GetTileSafely(x - (2 * NPC.direction), y);
+            Top = Framing.GetTileSafely(x - NPC.direction, y - 1);
+            Bottom = Framing.GetTileSafely(x - NPC.direction, y + 1);
+            Back = Framing.GetTileSafely(x - (2 * NPC.direction), y);
 
             Player player = Main.player[NPC.target];
             ScreenMovementPlayer screen = player.GetModPlayer<ScreenMovementPlayer>();
@@ -143,6 +147,8 @@ namespace Ascent.Content.NPCs.Events.Starfall
              * Other states do something else idk
              */
 
+            NPC.velocity.Y += 5;
+
             SetNewState();
         }
 
@@ -181,7 +187,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
                     }
                     break;
                 case 1:
-                    if (delta.Length() > 400f && NPC.velocity.Y == 0)
+                    if (delta.Length() > 400f && Bottom.HasTile) ;
                     {
                         State = 0;
                         NPC.noTileCollide = false;
