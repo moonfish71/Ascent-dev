@@ -96,7 +96,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
         private void Phase1()
         {
-            if (timer[0] > 120)
+            if (timer[0] > 2000)
             {
                 if (!AttackActive) { Speak(); }
 
@@ -109,7 +109,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             }
             else
             {
-                Move(NPC.Center, ActivePlayer.Center, 3f, .8f);
+                 Move(NPC.Center, ActivePlayer.Center, 1f, 0.99f);
             }
         }
 

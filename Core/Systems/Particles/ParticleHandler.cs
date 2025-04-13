@@ -252,7 +252,7 @@ namespace Ascent.Core.Systems.Particles
 
                 Color lightColour = Lighting.GetColor((int)(DrawPosition.X / 16f), (int)(DrawPosition.Y / 16f));
                 Color frontColour = (pos2D.Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 85);
-                particle.drawColor = Color.Lerp(lightColour, frontColour, 10*ModMath.ZToParallax(particle.position.Z - 5500));
+                particle.drawColor = Color.Lerp(lightColour, frontColour, 1500 * ModMath.ZToParallax(particle.position.Z - 5500));
 
                 bool PreDraw = particle.PreDraw(spriteBatch, DrawPosition);
 

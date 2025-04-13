@@ -9,7 +9,7 @@ namespace Ascent.Content.Particles
         float timer = 0;
         public override void SetDefaults()
         {
-            TimeLeft = ModMath.SecondsToTicks(25);
+            TimeLeft = ModMath.SecondsToTicks(1);
         }
 
         public override void OnSpawn()
@@ -21,6 +21,7 @@ namespace Ascent.Content.Particles
         {
             timer++;
             velocity *= .95f;
+            Opacity -= 7;
             //position.Z = (float)(500 * Math.Sin(timer / 15));
         }
     }

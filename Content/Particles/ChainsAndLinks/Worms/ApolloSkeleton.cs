@@ -44,15 +44,9 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
             }
         }
 
-        public override void OnSpawn()
-        {
-            target = new Vector2 (position.X, position.Y);
-        }
-
         public override void AI()
         {
-            Vector2 TargetVelocity = 2f * Vector2.Normalize(Main.LocalPlayer.Center - target);
-            target += TargetVelocity;
+            target = Main.MouseWorld;
         }
     }
 
@@ -61,7 +55,7 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
         public override void SetDefaults()
         {
             length = 104;
-            AngleRange = MathHelper.ToRadians(35);
+            AngleRange = MathHelper.ToRadians(40);
         }
     }
 
@@ -72,7 +66,7 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
         public override void SetDefaults()
         {
             length = 52;
-            AngleRange = MathHelper.ToRadians(35f);
+            AngleRange = MathHelper.ToRadians(40f);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition)
@@ -101,7 +95,7 @@ namespace Ascent.Content.Particles.ChainsAndLinks.Worms
         public override void SetDefaults()
         {
             length = 76;
-            AngleRange = MathHelper.ToRadians(35);
+            AngleRange = MathHelper.ToRadians(40);
         }
     }
 }

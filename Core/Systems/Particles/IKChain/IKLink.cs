@@ -27,6 +27,11 @@ namespace Ascent.Core.Systems.Particles.IKChain
         public double AngleRange = -1f;
         public double LinkAngle = 0f;
 
+        public override void SetDefaults()
+        {
+            ManualUpdate = true;
+        }
+
         public override void Update()
         {
             Vector2 dir = front - back;
