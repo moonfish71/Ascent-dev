@@ -236,11 +236,6 @@ namespace Ascent.Core.Systems.Particles
 
                 float Parallax = ModMath.ZToParallax(particle.position.Z);
 
-                if (Parallax < 0f)
-                {
-                    Parallax = 0f;
-                }
-
                 float scale3D = Parallax * Parallax;
 
                 Vector2 Pos = Main.screenPosition + (Main.ScreenSize.ToVector2() / 2);

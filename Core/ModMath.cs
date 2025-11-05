@@ -78,7 +78,7 @@ namespace Ascent.Core
 
         public static float ZToParallax(float Z)
         {
-            return ModMath.ToThePower((Z + 5500) / 5500f, 2);
+            return Math.Clamp(ToThePower((Z + 5500) / 5500f, 2), 0, float.MaxValue);
         }
 
         public static float ParallaxToZ(float parallax)

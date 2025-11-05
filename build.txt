@@ -1,3 +1,4 @@
 displayName = Ascent
 author = LunarCod
 version = 0.1
+modReferences = Luminance

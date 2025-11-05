@@ -88,8 +88,20 @@ Configs: {
 
 	talkInteraction: {
 		Tooltip: ""
-		World.Label: World
-		Chat.Label: Chat
-		Both.Label: Both
+
+		World: {
+			Label: World
+			Tooltip: ""
+		}
+
+		Chat: {
+			Label: Chat
+			Tooltip: ""
+		}
+
+		Both: {
+			Label: Both
+			Tooltip: ""
+		}
 	}
 }

@@ -3,6 +3,7 @@ using Ascent.Core;
 using Ascent.Core.ModPlayers;
 using Ascent.Core.Systems.Particles;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -19,6 +20,10 @@ namespace Ascent.Content.NPCs.Bosses.Aster
         public override string Texture => BossTex + "Aster/Aster";
 
         public float Z = 0;
+        public float oldZ = 0;
+        public float CamBias = 10;
+
+        int SavedDamage = 75;
 
         public override void SetDefaults()
         {
@@ -60,6 +65,8 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             }
             NPC.Opacity = 0;
 
+            SavedDamage = NPC.damage;
+
             SelectTarget();
         }
 
@@ -73,8 +80,33 @@ namespace Ascent.Content.NPCs.Bosses.Aster
         public override void AI()
         {
 
+            if (Z > 50 || Z < -50)
+            {
+                NPC.dontTakeDamage = true;
+                NPC.damage = 0;
+            }
+            else
+            {
+                NPC.dontTakeDamage = false;
+                NPC.damage = SavedDamage;
+            }
 
-            if (ActivePlayer != null && !ActivePlayer.dead)
+            ZVel += 0.01f * -Z;
+            ZVel *= 0.99f;
+
+            if (Math.Abs(ZVel) <= 1f)
+            {
+                ZVel = 0;
+            }
+
+            if(Math.Abs(Z) < 10)
+            {
+                Z = 0;
+            }
+
+            Z += ZVel;
+
+            if (ActivePlayer != null && !ActivePlayer.dead && !Main.dayTime)
             {
 
                 if (!AttackActive)
@@ -82,23 +114,27 @@ namespace Ascent.Content.NPCs.Bosses.Aster
                     timer[0]++;
                 }
 
-                //Streamlined Attack ratchet
-
                 switch (Phase) 
                 {
                     case 0:
                         Phase = 1;
                         break;
                     case 1:
+
                         foreach (Player player in Targets)
                         {
-                            ScreenMovementPlayer shakePlayer = player.GetModPlayer<ScreenMovementPlayer>();
+                            if (player.ModPlayers.Length != 0)
+                            {
+                                ScreenMovementPlayer shakePlayer = player.GetModPlayer<ScreenMovementPlayer>();
 
-                            shakePlayer.ScreenPosModified = true;
+                                shakePlayer.ScreenPosModified = true;
 
-                            shakePlayer.MoveScreen((new Vector2(spr.position.X, spr.position.Y) + player.Center) / 2, 40f);
+                                shakePlayer.MoveScreen((new Vector2(spr.position.X, spr.position.Y) * CamBias + player.Center * (255 - CamBias)) / 255, 40f);
+                            }
                         }
+
                         Phase1();
+                        
                         break;
                 }
                 UpdateTargets(Main.screenWidth);
@@ -108,6 +144,9 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             else
             {
                 timer[3]++;
+
+                Z = MathHelper.Lerp(Z, 0, Math.Clamp(timer[3], 0, 1));
+                CamBias = MathHelper.Lerp(CamBias, 0, Math.Clamp(timer[3], 0, 1));
 
                 if (timer[3] < 180)
                 {
@@ -121,9 +160,12 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
                 foreach (Player player in Targets)
                 {
-                    ScreenMovementPlayer shakePlayer = player.GetModPlayer<ScreenMovementPlayer>();
+                    if (player.ModPlayers.Length != 0)
+                    {
+                        ScreenMovementPlayer shakePlayer = player.GetModPlayer<ScreenMovementPlayer>();
 
-                    shakePlayer.ScreenPosModified = false;
+                        shakePlayer.ScreenPosModified = false;
+                    }
                 }
             }
 
@@ -131,6 +173,8 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             {
                 spr.TimeLeft = 0;
             }
+
+            oldZ = Z;
         }
 
         private void UpdateTargets(float Range)

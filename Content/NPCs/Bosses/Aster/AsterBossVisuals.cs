@@ -1,22 +1,21 @@
-﻿using static Ascent.Core.QuickDirectory;
+﻿using Ascent.Content.NPCs.Templates;
+using Ascent.Content.Projectiles.Hostile.BossAttacks.Aster;
+using Ascent.Core;
 using Ascent.Core.Systems.Particles;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Terraria.ModLoader;
 using Terraria;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Ascent.Content.NPCs.Templates;
-using Terraria.ID;
-using Ascent.Core;
-using Mono.Cecil;
 using Terraria.Graphics.Renderers;
-using Ascent.Content.Projectiles.Hostile.BossAttacks.Aster;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Ascent.Core.QuickDirectory;
 
 namespace Ascent.Content.NPCs.Bosses.Aster
 {
@@ -44,12 +43,10 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             if(Z > 50 || Z < -50)
             {
                 typeName = null;
-                NPC.dontTakeDamage = true;
             }
             else
             {
                 typeName = "Fell Aster";
-                NPC.dontTakeDamage = false;
             }
         }
 
@@ -135,8 +132,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             //" Accept",
             //" Altae",
             //" Into your heart.",
-            //" The stars",
-            //" Beckon.",
+            //" The stars beckon.",
             //" Will you answer?"
 
             //Test Phrase
@@ -217,10 +213,11 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
             if (parent.ModNPC is AsterBoss aster && parent.ModNPC != null)
             {
+                drawColor = Color.Lerp(drawColor, new Color(255,248,231), 0.25f);
 
                 Vector2 flatVel = new Vector2(velocity.X, velocity.Y);
 
-                float speedScale = (float)(2 / (1 + Math.Pow(Math.E, -flatVel.Length() / 8)) - 1);
+                float speedScale = (float)(2 / (1 + Math.Pow(Math.E, -flatVel.Length() / 10)) - 1) * (float)Math.Pow(ModMath.ZToParallax(position.Z),2f);
 
                 animTimer[0]++;
 
