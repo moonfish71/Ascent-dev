@@ -48,7 +48,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Visuals.Meteor,
-                new FlavorTextBestiaryInfoElement("Once a member of the former Duy'axxi Empire, this self-proclaimed 'Angel of the Last Star' now roams the universe with countless of its kin, spreading the despair and discontent of their goddess to any inadequately defended planet. \n \nUsually, there'd be thousands of them in the invading force. Something must have kept the rest out.")
+                new FlavorTextBestiaryInfoElement("Once a member of the former Duy'axxi Empire, this proclaimed 'Angel of the Last Star' now roams the universe with countless of its kin, spreading the despair and discontent of their goddess to any inadequately defended planet. \n \nUsually, there'd be thousands of them in the invading force. Something must have kept the rest out.")
             }); ;
         }
 
@@ -92,16 +92,16 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             }
 
             ZVel += 0.01f * -Z;
-            ZVel *= 0.99f;
-
-            if (Math.Abs(ZVel) <= 1f)
-            {
-                ZVel = 0;
-            }
+            ZVel *= 0.90f;
 
             if(Math.Abs(Z) < 10)
             {
                 Z = 0;
+
+                if (Math.Abs(ZVel) <= 0.5f)
+                {
+                    ZVel = 0;
+                }
             }
 
             Z += ZVel;

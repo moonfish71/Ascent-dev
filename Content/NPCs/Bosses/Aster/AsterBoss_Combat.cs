@@ -14,6 +14,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static System.Net.Mime.MediaTypeNames;
 using Ascent.Core.Systems.Particles;
+using Steamworks;
 
 namespace Ascent.Content.NPCs.Bosses.Aster
 {
@@ -58,7 +59,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
                 switch (action)
                 {
                     case Action.StarBarrage:
-                        StarBarrage();
+                         StarBarrage(90f);
                         break;
 
                     case Action.Crash:
@@ -148,7 +149,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
             return Letter;
         }
 
-        private void StarBarrage()
+        private void StarBarrage(float orbitTime = 60)
         {
             SoundStyle test = SoundID.DD2_ExplosiveTrapExplode;
 
@@ -157,7 +158,7 @@ namespace Ascent.Content.NPCs.Bosses.Aster
                 CamBias++;
             }
 
-            if (timer[2] > 61)
+            if (timer[2] > orbitTime + 1)
             {
                 NPC.netUpdate = true;
 
@@ -204,11 +205,11 @@ namespace Ascent.Content.NPCs.Bosses.Aster
 
                     End += ActivePlayer.velocity;
 
-                    NPC.velocity = .5f * (float)Math.PI / 120f * (float)Math.Sin(Math.PI * (timer[2] - 1) / 60) * (End - Start);
+                    NPC.velocity = .5f * (float)Math.PI / (2f * orbitTime) * (float)Math.Sin(Math.PI * (timer[2] - 1) / orbitTime) * (End - Start);
 
-                    NPC.Center = Vector2.Lerp(Start, End, (float)-(Math.Cos(Math.PI * (timer[2] - 1) / 60) - 1) / 2);
-                    Z = orbitDir * -Vector2.Distance(Start, End) * (float)Math.Sin(Math.PI * (timer[2] - 1) / 60);
-                    ZVel = orbitDir * -Vector2.Distance(Start, End) * (float)(Math.PI / 60f) * (float)Math.Cos(Math.PI * (timer[2] - 1) / 60);
+                    NPC.Center = Vector2.Lerp(Start, End, (float)-(Math.Cos(Math.PI * (timer[2] - 1) / orbitTime) - 1) / 2);
+                    Z = orbitDir * -Vector2.Distance(Start, End) * (float)Math.Sin(Math.PI * (timer[2] - 1) / orbitTime);
+                    ZVel = orbitDir * -Vector2.Distance(Start, End) * (float)(Math.PI / orbitTime) * (float)Math.Cos(Math.PI * (timer[2] - 1) / orbitTime);
                 }
             }
 

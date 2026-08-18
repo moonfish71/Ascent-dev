@@ -44,7 +44,7 @@ namespace Ascent.Content.NPCs.Events.Starfall
             bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Visuals.Meteor,
-                new FlavorTextBestiaryInfoElement("A thrall of the Astral Gestalt. This thrall has been shaped into a spider-like form, letting it deftly jump and climb walls. It beams the dark truths of its kin directly into the skulls of those it latches onto.")
+                new FlavorTextBestiaryInfoElement("A thrall of the Astral Gestalt. This thrall has been shaped into a spider-like form, letting it deftly jump and climb walls. It beams the dogma of its kin directly into the skulls of those it latches onto.")
             }); ;
         }
 
@@ -131,6 +131,11 @@ namespace Ascent.Content.NPCs.Events.Starfall
                     NPC.velocity = Vector2.Zero;
                     NPC.spriteDirection = -NPC.direction;
                     break;
+            }
+
+            if(State != 2 && Math.Abs(NPC.rotation) > 0.1f)
+            {
+                NPC.rotation = 0;
             }
 
             /*
